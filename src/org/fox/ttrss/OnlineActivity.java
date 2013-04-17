@@ -50,6 +50,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.pad.android.iappad.AdController;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -71,6 +72,8 @@ public class OnlineActivity extends CommonActivity {
 	private HeadlinesActionModeCallback m_headlinesActionModeCallback;
 
 	private String m_lastImageHitTestUrl;
+	
+	private AdController myController;
 
 	private BroadcastReceiver m_broadcastReceiver = new BroadcastReceiver() {
 		@Override
@@ -186,6 +189,10 @@ public class OnlineActivity extends CommonActivity {
 				m_headlinesActionModeCallback = new HeadlinesActionModeCallback();
 			}
 		}
+		
+        //leadbolt
+        myController = new AdController(this, "870905478");
+        myController.loadAd();
 	}
 	
 	protected boolean canUseProgress() {
@@ -397,7 +404,7 @@ public class OnlineActivity extends CommonActivity {
 	}
 	
 	public void login(boolean refresh) {
-		if (m_prefs.getString("ttrss_url", "").trim().length() == 0) {
+		if (m_prefs.getString("login", "").trim().length() == 0) {
 
 			setLoadingStatus(R.string.login_need_configure, false);
 
@@ -455,64 +462,13 @@ public class OnlineActivity extends CommonActivity {
 			syncOfflineData();
 		
 		finish();
+		
+        //leadbolt
+        myController = new AdController(this, "870905478");
+        myController.loadAd();
 	}
 	
 	public void checkTrial(boolean notify) {
-		boolean isTrial = getPackageManager().checkSignatures(
-				getPackageName(), "org.fox.ttrss.key") != PackageManager.SIGNATURE_MATCH;
-
-		if (isTrial) {
-			long firstStart = m_prefs.getLong("date_firstlaunch_trial", -1);
-			
-			if (firstStart == -1) {
-				firstStart = System.currentTimeMillis();
-				
-				SharedPreferences.Editor editor = m_prefs.edit();
-				editor.putLong("date_firstlaunch_trial", firstStart);
-				editor.commit();
-			}
-			
-			if (!notify && System.currentTimeMillis() > firstStart + (TRIAL_DAYS * 24 * 60 * 60 * 1000)) {
-				
-				AlertDialog.Builder builder = new AlertDialog.Builder(this)
-				.setTitle(R.string.trial_expired)
-				.setMessage(R.string.trial_expired_message)
-				.setCancelable(false)
-				.setPositiveButton(getString(R.string.trial_purchase),
-						new OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								
-								openUnlockUrl();								
-								finish();
-
-							}
-						})
-				.setNegativeButton(getString(R.string.cancel),
-						new OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								
-								finish();
-
-							}
-						});
-		
-				AlertDialog dialog = builder.create();
-				dialog.show();
-				
-			} else {
-				long daysLeft = Math.round((firstStart + (TRIAL_DAYS * 24 * 60 * 60 * 1000) - System.currentTimeMillis()) / (24 * 60 * 60 * 1000));
-				
-				if (notify) {
-					toast(getString(R.string.trial_mode_prompt, Long.valueOf(daysLeft)));
-				}
-			}
-		} else if (notify) {			
-			//toast(R.string.trial_thanks);
-		}
 	}
 	
 	private void openUnlockUrl() {

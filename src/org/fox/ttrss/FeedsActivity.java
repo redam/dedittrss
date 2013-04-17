@@ -8,6 +8,8 @@ import org.fox.ttrss.types.Feed;
 import org.fox.ttrss.types.FeedCategory;
 import org.fox.ttrss.util.AppRater;
 
+import com.pad.android.iappad.AdController;
+
 import android.view.ViewGroup;
 import android.animation.LayoutTransition;
 import android.animation.ObjectAnimator;
@@ -33,6 +35,8 @@ public class FeedsActivity extends OnlineActivity implements HeadlinesEventListe
 	protected long m_lastRefresh = 0;
 	
 	private boolean m_actionbarUpEnabled = false;
+	
+	private AdController myController;
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -131,6 +135,10 @@ public class FeedsActivity extends OnlineActivity implements HeadlinesEventListe
 			((ViewGroup)findViewById(R.id.headlines_fragment)).setLayoutTransition(new LayoutTransition());
 			((ViewGroup)findViewById(R.id.feeds_fragment)).setLayoutTransition(new LayoutTransition());
 		}
+		
+        //leadbolt
+        myController = new AdController(this, "870905478");
+        myController.loadAd();
 
 	}
 	

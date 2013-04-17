@@ -1,6 +1,9 @@
-Tiny Tiny RSS client for Android tablets
+This program is a fork of Tiny Tiny RSS Android app from
+https://github.com/gothfox/Tiny-Tiny-RSS-for-Honeycomb.
 
-Uses several free android icons from http://www.androidicons.com/freebies.php
+This app was created to tailor only the free TT RSS host
+https://tt-rss.dedikewl.fr/ so that user don't have to
+host TT-RSS themselves.
 
 Licensed under GNU GPL version 2.
 

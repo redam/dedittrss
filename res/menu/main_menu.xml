@@ -142,7 +142,7 @@
         <item
             android:id="@+id/donate"
             android:showAsAction=""
-            android:title="@string/trial_purchase"/>
+            android:title="@string/trial_purchase" android:visible="false"/>
     </group>
 
     <item
